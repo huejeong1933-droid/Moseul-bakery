@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제주 베이커리 모슬 (Bakery Moseul) | 매일 아침 구워내는 따뜻한 행복</title>
+  <meta name="description" content="제주시내에 위치한 감성 수제 베이커리 카페 모슬. 제주 현무암 소금빵, 한라산 말차 크로와상, 우도 땅콩 크림빵 등 로컬 재료로 정직하게 구워냅니다.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            jeju: {
+              cream: '#FAF7F2',
+              sand: '#F3ECE4',
+              clay: '#8C5B32',
+              wood: '#5C4533',
+              dark: '#2E241E',
+              orange: '#E5A869',
+            }
+          },
+          fontFamily: {
+            serif: ['Gowun Batang', 'serif'],
+            sans: ['Noto Sans KR', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts (감성적인 한글 세리프 & 산세리프 폰트) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #FAF7F2;
+      color: #3E342F;
+    }
+    .font-serif-kr {
+      font-family: 'Gowun Batang', serif;
+    }
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .animate-pulse-soft {
+      animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF7F2] text-[#3E342F] antialiased selection:bg-[#E4D5C7] selection:text-[#2E241E]">
+
+  <!-- Toast Notification (주소 복사 알림) -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#2D241E] text-[#F5EFEB] px-5 py-3 rounded-full text-sm font-medium shadow-2xl flex items-center gap-2 transition-all duration-300 border border-[#4A3D34] opacity-0 pointer-events-none translate-y-3">
+    <svg class="w-4 h-4 text-[#E5A869]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    <span id="toast-text">알림 메시지</span>
+  </div>
+
+  <!-- 상단 공지 띠 배너 -->
+  <div class="bg-[#4E3F35] text-[#F3ECE4] text-xs py-2 px-4 text-center tracking-wide flex items-center justify-center gap-3">
+    <span class="flex items-center gap-1.5 font-medium">
+      <span class="inline-block w-2 h-2 rounded-full bg-[#E5A869] animate-pulse-soft"></span>
+      오늘의 갓 구운 빵 1차 출고 완료
+    </span>
+    <span class="text-[#C4B3A3] hidden sm:inline">|</span>
+    <span class="hidden sm:inline text-[#E8DCD1]">제주 도심 속 여유와 따스한 버터 향기가 머무는 곳</span>
+    <button onclick="openModal('event-modal')" class="underline hover:text-white transition ml-2 font-medium cursor-pointer">
+      10월 혜택 보기
+    </button>
+  </div>
+
+  <!-- 상단 네비게이션 바 (Header/Nav) -->
+  <header id="main-nav" class="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#EAE2D8] transition-all duration-300 py-4">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex items-center justify-between">
+      <!-- 카페 로고 -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-full bg-[#EADCCF] flex items-center justify-center text-[#5C4533] border border-[#D5C2B1] group-hover:scale-105 transition-transform duration-300">
+          <span class="font-serif-kr text-lg font-bold">모</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-serif-kr text-xl sm:text-2xl font-bold tracking-tight text-[#2E241E]">
+              베이커리 모슬
+            </span>
+            <span class="text-[10px] uppercase tracking-widest text-[#9A816E] font-medium hidden md:inline">
+              JEJU
+            </span>
+          </div>
+          <p class="text-[11px] text-[#867061] tracking-tight -mt-0.5">
+            제주 감성 수제 베이커리 카페
+          </p>
+        </div>
+      </a>
+
+      <!-- 데스크톱 네비게이션 링크 -->
+      <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-[#5C4B40]">
+        <a href="#about" class="hover:text-[#9E653A] transition">베이커리 소개</a>
+        <a href="#signature" class="hover:text-[#9E653A] transition">시그니처 메뉴</a>
+        <a href="#schedule" class="hover:text-[#9E653A] transition">빵 나오는 시간</a>
+        <a href="#atmosphere" class="hover:text-[#9E653A] transition">공간과 분위기</a>
+        <a href="#location" class="hover:text-[#9E653A] transition">오시는 길</a>
+        <a href="#reviews" class="hover:text-[#9E653A] transition">리뷰 & 소식</a>
+      </nav>
+
+      <!-- 우측 CTA 및 모바일 햄버거 버튼 -->
+      <div class="flex items-center gap-3">
+        <a href="#location" class="hidden lg:inline-flex items-center gap-1.5 text-xs font-medium bg-[#5C4533] text-[#FAF7F2] px-4 py-2 rounded-full hover:bg-[#473425] transition shadow-sm">
+          <svg class="w-3.5 h-3.5 text-[#E6C3A3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+          <span>방문 안내</span>
+        </a>
+
+        <!-- 반응형 모바일 햄버거 메뉴 버튼 -->
+        <button id="menu-btn" class="md:hidden p-2 rounded-lg text-[#3E342F] hover:bg-[#EFE7DE] transition cursor-pointer" aria-label="메뉴 열기">
+          <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 모바일 드롭다운 메뉴 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#FAF7F2] border-b border-[#E5DACD] px-6 py-6 shadow-xl">
+      <div class="flex flex-col gap-4 text-base font-medium text-[#463930]">
+        <a href="#about" class="mobile-link py-2 hover:text-[#9E653A] border-b border-[#F0E6DC] flex items-center justify-between">
+          <span>베이커리 소개 (About Us)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#signature" class="mobile-link py-2 hover:text-[#9E653A] border-b border-[#F0E6DC] flex items-center justify-between">
+          <span>시그니처 메뉴 (Signature Menu)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#schedule" class="mobile-link py-2 hover:text-[#9E653A] border-b border-[#F0E6DC] flex items-center justify-between">
+          <span>빵 나오는 시간 (Baking Schedule)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#atmosphere" class="mobile-link py-2 hover:text-[#9E653A] border-b border-[#F0E6DC] flex items-center justify-between">
+          <span>공간과 분위기 (Atmosphere)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#location" class="mobile-link py-2 hover:text-[#9E653A] border-b border-[#F0E6DC] flex items-center justify-between">
+          <span>오시는 길 (Location & Parking)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        <a href="#reviews" class="mobile-link py-2 hover:text-[#9E653A] flex items-center justify-between">
+          <span>고객 리뷰 & 이벤트 (Reviews)</span>
+          <svg class="w-4 h-4 text-[#A8988B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+
+        <div class="pt-4 flex gap-2">
+          <button onclick="copyAddress(); closeMobileMenu();" class="flex-1 py-2.5 text-center text-xs font-medium bg-[#EFE5DB] text-[#554234] rounded-lg border border-[#DACABE] cursor-pointer">
+            주소 복사하기
+          </button>
+          <button onclick="openModal('event-modal'); closeMobileMenu();" class="flex-1 py-2.5 text-center text-xs font-medium bg-[#5C4533] text-white rounded-lg cursor-pointer">
+            10월 이벤트
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 히어로 섹션 (Hero Section) -->
+  <section class="relative overflow-hidden pt-8 pb-20 md:py-24 lg:py-28">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <!-- 메인 카피 및 CTA -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EFE5DA] border border-[#DFCFC2] text-xs font-medium text-[#684C36]">
+            <span>✨ 제주시 관덕정 골목 감성 베이커리</span>
+          </div>
+
+          <h1 class="font-serif-kr text-3xl sm:text-5xl lg:text-[3.25rem] font-bold text-[#2A201A] leading-[1.25] tracking-tight">
+            매일 아침 제주에서<br>
+            구워내는 <span class="text-[#8B522B] relative inline-block">
+              따뜻한 행복
+              <span class="absolute left-0 bottom-1 w-full h-2.5 bg-[#E8CDB5]/40 -z-10 rounded"></span>
+            </span>
+          </h1>
+
+          <p class="text-[#645244] text-base sm:text-lg leading-relaxed max-w-xl font-normal">
+            제주의 맑은 바람과 따스한 햇살, 프랑스산 천연 발효 버터와 로컬 식재료(유기농 말차, 우도 땅콩, 구좌 당근)로 느리지만 정직하게 구워냅니다. 분주한 여행과 일상 속 아늑한 온기를 채워보세요.
+          </p>
+
+          <div class="pt-2 flex flex-wrap items-center gap-3.5 sm:gap-4">
+            <a href="#signature" class="px-6 py-3.5 rounded-full bg-[#5A4333] hover:bg-[#433124] text-[#FAF7F2] font-medium text-sm sm:text-base transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2">
+              <span>시그니처 메뉴 보기</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+            <a href="#location" class="px-6 py-3.5 rounded-full bg-white hover:bg-[#F2ECE5] text-[#523E30] font-medium text-sm sm:text-base transition-all duration-200 border border-[#DDCFC3] shadow-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#8C5C36]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+              <span>위치 확인하기</span>
+            </a>
+          </div>
+
+          <div class="pt-4 grid grid-cols-3 gap-3 sm:gap-4 border-t border-[#EAE0D4] max-w-lg">
+            <div>
+              <div class="text-xl sm:text-2xl font-serif-kr font-bold text-[#3B2D24]">08:30</div>
+              <div class="text-xs text-[#806B5C] mt-0.5">매일 아침 첫 빵 출고</div>
+            </div>
+            <div>
+              <div class="text-xl sm:text-2xl font-serif-kr font-bold text-[#3B2D24]">100%</div>
+              <div class="text-xs text-[#806B5C] mt-0.5">당일 생산 당일 소진</div>
+            </div>
+            <div>
+              <div class="text-xl sm:text-2xl font-serif-kr font-bold text-[#3B2D24]">AOP 버터</div>
+              <div class="text-xs text-[#806B5C] mt-0.5">프랑스 최상급 발효버터</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 히어로 비주얼 이미지 & 카드 -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-md lg:max-w-none">
+            <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-[#EFE8DF] relative group">
+              <img
+                src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=85"
+                alt="제주 베이커리 모슬의 갓 구운 빵"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              <div class="absolute bottom-5 left-5 right-5 text-white">
+                <span class="inline-block px-2.5 py-1 rounded bg-[#E1A667] text-[#291B10] text-xs font-semibold mb-1.5">
+                  당일 한정 수량
+                </span>
+                <p class="font-serif-kr text-lg font-bold">오븐에서 방금 나온 제주 현무암 소금빵</p>
+                <p class="text-xs text-[#F2ECE5] mt-0.5 opacity-90">따스한 커피 한 잔과 함께하는 제주 도심의 아침</p>
+              </div>
+            </div>
+
+            <!-- 플로팅 카드 1 -->
+            <div class="absolute -top-4 -right-3 sm:-right-5 bg-white/95 backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl border border-[#E9DFD3] flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#FAF3EC] flex items-center justify-center text-[#8C5B32] text-lg">
+                ☕
+              </div>
+              <div>
+                <p class="text-xs text-[#7F6B5C]">스페셜티 드립 &</p>
+                <p class="text-xs font-bold text-[#382B21]">제주 로컬 베이커리</p>
+              </div>
+            </div>
+
+            <!-- 플로팅 카드 2 -->
+            <div class="absolute -bottom-4 -left-3 sm:-left-5 bg-[#3B2D24] text-[#FAF5EF] px-4 py-3 rounded-2xl shadow-xl border border-[#524034] flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-[#E5A869]/20 flex items-center justify-center text-[#E5A869] text-sm">
+                ★
+              </div>
+              <div>
+                <div class="text-xs font-bold text-[#EAA858]">4.92 / 5.0</div>
+                <p class="text-[11px] text-[#C4B4A5]">제주 여행자 & 도민 추천</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 카페 소개 및 스토리텔링 (About Us) -->
+  <section id="about" class="py-20 bg-[#F4EFEA] border-y border-[#EAE0D4]">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">
+          About Moseul Bakery
+        </span>
+        <h2 class="font-serif-kr text-3xl sm:text-4xl font-bold text-[#2A201A] mt-2 mb-4">
+          바람이 쉬어가는 자리, 베이커리 모슬
+        </h2>
+        <p class="text-[#645244] text-base leading-relaxed">
+          &lsquo;모슬&rsquo;은 거친 바람도 잠시 쉬어가는 제주의 옛 정취에서 따온 이름입니다.
+          복잡한 일상에서 벗어나, 매일 아침 구워내는 고소한 빵 냄새와 함께 오롯이 나에게 집중하는 아늑한 시간을 선물합니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-[#FAF7F2] p-8 rounded-2xl border border-[#E6DCD1] hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-[#EFE6DD] flex items-center justify-center text-2xl mb-5">
+            🌾
+          </div>
+          <h3 class="font-serif-kr text-xl font-bold text-[#32251D] mb-2.5">
+            제주 로컬 식재료
+          </h3>
+          <p class="text-sm text-[#6C5B4E] leading-relaxed">
+            구좌의 달콤한 흙당근, 한라산 청정 말차, 우도의 고소한 땅콩, 대정 마늘 등 제주의 자연이 키워낸 가장 신선한 식재료만을 고집합니다.
+          </p>
+        </div>
+
+        <div class="bg-[#FAF7F2] p-8 rounded-2xl border border-[#E6DCD1] hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-[#EFE6DD] flex items-center justify-center text-2xl mb-5">
+            ⏳
+          </div>
+          <h3 class="font-serif-kr text-xl font-bold text-[#32251D] mb-2.5">
+            36시간 저온 발효종
+          </h3>
+          <p class="text-sm text-[#6C5B4E] leading-relaxed">
+            화학 첨가제나 개량제 없이, 과일과 통밀로 직접 기른 천연 발효종을 사용하여 빵을 드신 후에도 속이 편안하고 담백합니다.
+          </p>
+        </div>
+
+        <div class="bg-[#FAF7F2] p-8 rounded-2xl border border-[#E6DCD1] hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-[#EFE6DD] flex items-center justify-center text-2xl mb-5">
+            🪵
+          </div>
+          <h3 class="font-serif-kr text-xl font-bold text-[#32251D] mb-2.5">
+            온기가 담긴 아늑한 공간
+          </h3>
+          <p class="text-sm text-[#6C5B4E] leading-relaxed">
+            제주의 전통 돌담과 따스한 우드 톤 가구, 그리고 창밖으로 비치는 제주시 구도심의 고즈넉한 풍경 속에서 편안히 머물러 가세요.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 시그니처 베이커리 메뉴 (Signature Menu) -->
+  <section id="signature" class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">
+            Signature Collection
+          </span>
+          <h2 class="font-serif-kr text-3xl sm:text-4xl font-bold text-[#2A201A] mt-2">
+            모슬 대표 시그니처 빵
+          </h2>
+          <p class="text-[#645244] text-sm sm:text-base mt-2">
+            제주의 색과 맛을 고스란히 담아낸 모슬만의 시그니처 베이커리 라인업입니다.
+          </p>
+        </div>
+
+        <div class="mt-4 md:mt-0 flex items-center gap-2 text-xs text-[#7B6758] bg-[#EFE8DF] px-3.5 py-2 rounded-lg border border-[#DFCFC1]">
+          <svg class="w-4 h-4 text-[#8C5B32]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>일일 한정 수량 제작으로 조기 품절될 수 있습니다.</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <!-- 메뉴 1: 제주 현무암 소금빵 -->
+        <div onclick="showDetail('salt')" class="bg-white rounded-2xl overflow-hidden border border-[#E6DDD2] shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col">
+          <div class="relative aspect-[16/11] overflow-hidden bg-[#EAE2D8]">
+            <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=800&q=80" alt="제주 현무암 소금빵" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3.5 left-3.5">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#49392D]/90 text-white backdrop-blur-sm">시그니처 No.1</span>
+            </div>
+            <div class="absolute top-3.5 right-3.5">
+              <span class="px-2 py-1 rounded bg-[#E49D56] text-[#2F1F13] text-[11px] font-bold">대표 메뉴</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-serif-kr text-xl font-bold text-[#2A201A] group-hover:text-[#88542F] transition-colors">제주 현무암 소금빵</h3>
+                <span class="text-base font-bold text-[#7E4C29] whitespace-nowrap">3,800원</span>
+              </div>
+              <p class="text-[12px] text-[#9A8677] mb-3">Jeju Basalt Black Salt Bread</p>
+              <p class="text-sm text-[#5C4D42] leading-relaxed line-clamp-2">오징어 먹물 반죽에 프랑스 AOP 이즈니 버터와 게랑드 천일염을 얹은 겉바속촉 시그니처 소금빵</p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-[#F2ECE4] flex items-center justify-between text-xs text-[#806D5E]">
+              <span>매일 09:30 / 14:00 (1일 2회)</span>
+              <span class="text-[#88542F] font-medium flex items-center group-hover:translate-x-1 transition-transform">상세 보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메뉴 2: 제주 한라산 말차 크로와상 -->
+        <div onclick="showDetail('matcha')" class="bg-white rounded-2xl overflow-hidden border border-[#E6DDD2] shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col">
+          <div class="relative aspect-[16/11] overflow-hidden bg-[#EAE2D8]">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80" alt="제주 한라산 말차 크로와상" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3.5 left-3.5">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#49392D]/90 text-white backdrop-blur-sm">베스트셀러</span>
+            </div>
+            <div class="absolute top-3.5 right-3.5">
+              <span class="px-2 py-1 rounded bg-[#E49D56] text-[#2F1F13] text-[11px] font-bold">인기 디저트</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-serif-kr text-xl font-bold text-[#2A201A] group-hover:text-[#88542F] transition-colors">한라산 말차 크로와상</h3>
+                <span class="text-base font-bold text-[#7E4C29] whitespace-nowrap">5,800원</span>
+              </div>
+              <p class="text-[12px] text-[#9A8677] mb-3">Hallasan Matcha Croissant</p>
+              <p class="text-sm text-[#5C4D42] leading-relaxed line-clamp-2">제주 서귀포 청정 유기농 말차 가나슈 크림이 가득 채워진 27겹 바삭한 발효버터 크로와상</p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-[#F2ECE4] flex items-center justify-between text-xs text-[#806D5E]">
+              <span>매일 10:30 (한정 60개)</span>
+              <span class="text-[#88542F] font-medium flex items-center group-hover:translate-x-1 transition-transform">상세 보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메뉴 3: 우도 땅콩 크림 소보로 -->
+        <div onclick="showDetail('peanut')" class="bg-white rounded-2xl overflow-hidden border border-[#E6DDD2] shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col">
+          <div class="relative aspect-[16/11] overflow-hidden bg-[#EAE2D8]">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" alt="우도 땅콩 크림 소보로" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3.5 left-3.5">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#49392D]/90 text-white backdrop-blur-sm">고소함 가득</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-serif-kr text-xl font-bold text-[#2A201A] group-hover:text-[#88542F] transition-colors">우도 땅콩 크림 소보로</h3>
+                <span class="text-base font-bold text-[#7E4C29] whitespace-nowrap">4,900원</span>
+              </div>
+              <p class="text-[12px] text-[#9A8677] mb-3">Udo Peanut Brioche Craquelin</p>
+              <p class="text-sm text-[#5C4D42] leading-relaxed line-clamp-2">제주 우도 직송 햇땅콩 크럼블과 풍성하고 부드러운 수제 피넛 버터 크림의 조화</p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-[#F2ECE4] flex items-center justify-between text-xs text-[#806D5E]">
+              <span>매일 11:00</span>
+              <span class="text-[#88542F] font-medium flex items-center group-hover:translate-x-1 transition-transform">상세 보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메뉴 4: 구좌 당근 깜빠뉴 -->
+        <div onclick="showDetail('carrot')" class="bg-white rounded-2xl overflow-hidden border border-[#E6DDD2] shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col">
+          <div class="relative aspect-[16/11] overflow-hidden bg-[#EAE2D8]">
+            <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=800&q=80" alt="구좌 당근 호두 사워도우" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3.5 left-3.5">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#49392D]/90 text-white backdrop-blur-sm">건강 식사빵</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-serif-kr text-xl font-bold text-[#2A201A] group-hover:text-[#88542F] transition-colors">구좌 당근 호두 깜빠뉴</h3>
+                <span class="text-base font-bold text-[#7E4C29] whitespace-nowrap">6,500원</span>
+              </div>
+              <p class="text-[12px] text-[#9A8677] mb-3">Gujwa Carrot Campagne</p>
+              <p class="text-sm text-[#5C4D42] leading-relaxed line-clamp-2">제주 구좌읍 햇당근의 은은한 단맛과 호두, 사과 천연발효종으로 36시간 저온 숙성한 식사빵</p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-[#F2ECE4] flex items-center justify-between text-xs text-[#806D5E]">
+              <span>매일 09:00</span>
+              <span class="text-[#88542F] font-medium flex items-center group-hover:translate-x-1 transition-transform">상세 보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메뉴 5: 제주 노을 감귤 퀸아망 -->
+        <div onclick="showDetail('kouign')" class="bg-white rounded-2xl overflow-hidden border border-[#E6DDD2] shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col">
+          <div class="relative aspect-[16/11] overflow-hidden bg-[#EAE2D8]">
+            <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=800&q=80" alt="제주 감귤 퀸아망" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute top-3.5 left-3.5">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#49392D]/90 text-white backdrop-blur-sm">상큼 달콤</span>
+            </div>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-baseline justify-between gap-2 mb-1">
+                <h3 class="font-serif-kr text-xl font-bold text-[#2A201A] group-hover:text-[#88542F] transition-colors">제주 노을 감귤 퀸아망</h3>
+                <span class="text-base font-bold text-[#7E4C29] whitespace-nowrap">5,200원</span>
+              </div>
+              <p class="text-[12px] text-[#9A8677] mb-3">Jeju Tangerine Kouign-Amann</p>
+              <p class="text-sm text-[#5C4D42] leading-relaxed line-clamp-2">카라멜라이징된 바삭한 결 사이로 제주 감귤 수제 마멀레이드가 퍼지는 감성 페이스트리</p>
+            </div>
+            <div class="pt-5 mt-5 border-t border-[#F2ECE4] flex items-center justify-between text-xs text-[#806D5E]">
+              <span>매일 11:30</span>
+              <span class="text-[#88542F] font-medium flex items-center group-hover:translate-x-1 transition-transform">상세 보기 &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 메뉴 6: 모슬 하우스 블렌드 드립 커피 -->
+        <div class="bg-[#FAF3EA] rounded-2xl p-7 border border-[#E8DCCE] flex flex-col justify-between">
+          <div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#E4C8B1] text-[#4A3222]">스페셜 페어링</span>
+            <h3 class="font-serif-kr text-2xl font-bold text-[#2E2017] mt-3 mb-1">모슬 시그니처 드립 커피</h3>
+            <p class="text-xs text-[#958172] mb-3">Moseul House Blend Filter Coffee</p>
+            <p class="text-sm text-[#614E40] leading-relaxed">
+              제주 화산토의 맑은 물과 어우러져 버터 풍미 가득한 빵과 최상의 궁합을 선사하는 모슬 하우스 블렌드 드립 커피 (5,500원)
+            </p>
+          </div>
+          <div class="pt-5 mt-5 border-t border-[#E8DDCE] flex items-center justify-between text-xs text-[#7B6655]">
+            <span>에티오피아 + 콜롬비아 싱글오리진</span>
+            <a href="#location" class="text-[#88542F] font-bold hover:underline">매장 안내 &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 갓 구운 빵 나오는 시간표 (Baking Schedule) -->
+  <section id="schedule" class="py-16 bg-[#F5EFEB] border-t border-[#EAE0D4]">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8">
+      <div class="text-center mb-10">
+        <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">Daily Fresh Baking</span>
+        <h2 class="font-serif-kr text-2xl sm:text-3xl font-bold text-[#2A201A] mt-1.5">오늘의 빵 나오는 시간표</h2>
+        <p class="text-xs sm:text-sm text-[#6C5B4E] mt-1.5">가장 바삭하고 촉촉한 갓 구운 빵의 골든 타임을 확인해보세요.</p>
+      </div>
+
+      <div class="space-y-3.5">
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-[#E5DACD] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-[#F7F2EB] border border-[#E9DDD0] flex items-center justify-center text-xl shrink-0">🌾</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-base text-[#8C532B] bg-[#F7EFE8] px-2 py-0.5 rounded border border-[#EAD5C2]">09:00</span>
+                <h4 class="font-medium text-[#2E231C] text-sm sm:text-base">건강 식사빵 & 깜빠뉴</h4>
+              </div>
+              <p class="text-xs sm:text-sm text-[#705E51] mt-1">구좌 당근 깜빠뉴, 호밀 사워도우, 무화과 바게트</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center text-[11px] font-medium text-[#645041] bg-[#F0E6DB] px-2.5 py-1 rounded-full self-start sm:self-auto">출고 완료</span>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-[#E5DACD] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-[#F7F2EB] border border-[#E9DDD0] flex items-center justify-center text-xl shrink-0">🥐</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-base text-[#8C532B] bg-[#F7EFE8] px-2 py-0.5 rounded border border-[#EAD5C2]">09:30</span>
+                <h4 class="font-medium text-[#2E231C] text-sm sm:text-base">1차 시그니처 소금빵</h4>
+              </div>
+              <p class="text-xs sm:text-sm text-[#705E51] mt-1">현무암 소금빵, 클래식 버터 소금빵, 명란 소금빵</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center text-[11px] font-medium text-[#645041] bg-[#F0E6DB] px-2.5 py-1 rounded-full self-start sm:self-auto">인기 서빙 중</span>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-[#E5DACD] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-[#F7F2EB] border border-[#E9DDD0] flex items-center justify-center text-xl shrink-0">✨</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-base text-[#8C532B] bg-[#F7EFE8] px-2 py-0.5 rounded border border-[#EAD5C2]">10:30</span>
+                <h4 class="font-medium text-[#2E231C] text-sm sm:text-base">페이스트리 & 크로와상</h4>
+              </div>
+              <p class="text-xs sm:text-sm text-[#705E51] mt-1">한라산 말차 크로와상, 아몬드 크로와상, 퀸아망</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center text-[11px] font-medium text-[#645041] bg-[#F0E6DB] px-2.5 py-1 rounded-full self-start sm:self-auto">한정 60개</span>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-[#E5DACD] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-[#F7F2EB] border border-[#E9DDD0] flex items-center justify-center text-xl shrink-0">🥜</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-base text-[#8C532B] bg-[#F7EFE8] px-2 py-0.5 rounded border border-[#EAD5C2]">11:30</span>
+                <h4 class="font-medium text-[#2E231C] text-sm sm:text-base">달콤한 크림빵 & 디저트</h4>
+              </div>
+              <p class="text-xs sm:text-sm text-[#705E51] mt-1">우도 땅콩 크림 소보로, 제주 쑥 인절미 브레드</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center text-[11px] font-medium text-[#645041] bg-[#F0E6DB] px-2.5 py-1 rounded-full self-start sm:self-auto">서빙 준비</span>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 sm:p-5 border border-[#E5DACD] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-xl bg-[#F7F2EB] border border-[#E9DDD0] flex items-center justify-center text-xl shrink-0">☕</div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-bold text-base text-[#8C532B] bg-[#F7EFE8] px-2 py-0.5 rounded border border-[#EAD5C2]">14:00</span>
+                <h4 class="font-medium text-[#2E231C] text-sm sm:text-base">2차 갓 구운 소금빵 리필</h4>
+              </div>
+              <p class="text-xs sm:text-sm text-[#705E51] mt-1">오후 티타임을 위한 현무암 소금빵 & 버터롤 리필</p>
+            </div>
+          </div>
+          <span class="inline-flex items-center text-[11px] font-medium text-[#645041] bg-[#F0E6DB] px-2.5 py-1 rounded-full self-start sm:self-auto">오후 타임</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 카페 공간 및 분위기 소개 (About Us / Atmosphere) -->
+  <section id="atmosphere" class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-5 space-y-5">
+          <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">Space & Mood</span>
+          <h2 class="font-serif-kr text-3xl sm:text-4xl font-bold text-[#2A201A] leading-snug">
+            제주의 빛과 계절을 담은<br>
+            통창과 돌담 인테리어
+          </h2>
+          <p class="text-[#645244] text-base leading-relaxed">
+            베이커리 모슬은 제주시 구도심의 오랜 결을 살린 원목 가구와 제주의 검은 현무암 돌담이 조화를 이루는 감성 공간입니다.
+          </p>
+          <p class="text-[#645244] text-base leading-relaxed">
+            2층 통창 너머로 쏟아지는 제주 햇살을 받으며 은은한 원두 향과 갓 구운 빵을 음미해보세요. 혼자만의 사색도, 소중한 사람과의 다정한 대화도 더욱 따뜻해집니다.
+          </p>
+
+          <div class="pt-2 space-y-2.5 text-sm text-[#544337]">
+            <div class="flex items-center gap-2.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#9E653A]"></span>
+              <span>1층: 오픈 베이커리 키친 & 카운터, 테이크아웃 라운지</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#9E653A]"></span>
+              <span>2층: 햇살 가득한 통창 테이블 석 & 제주 감성 포토존</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#9E653A]"></span>
+              <span>야외: 돌담 정원 테라스 (반려견 동반 가능 구역)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+          <div class="space-y-4">
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-md bg-[#E8E0D5]">
+              <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80" alt="모슬 통창 인테리어" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="aspect-square rounded-2xl overflow-hidden shadow-md bg-[#E8E0D5]">
+              <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80" alt="아늑한 커피 바와 나무 가구" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+          </div>
+          <div class="space-y-4 pt-6">
+            <div class="aspect-square rounded-2xl overflow-hidden shadow-md bg-[#E8E0D5]">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80" alt="따뜻한 라떼와 베이커리" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-md bg-[#E8E0D5]">
+              <img src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=800&q=80" alt="정성스럽게 구워지는 빵" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 고객 리뷰 및 이벤트 (Reviews & Events) -->
+  <section id="reviews" class="py-20 bg-[#F4EDE5] border-t border-[#E7DDD0]">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center max-w-xl mx-auto mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">Guest Stories & Events</span>
+        <h2 class="font-serif-kr text-3xl font-bold text-[#2A201A] mt-1.5 mb-3">모슬을 다녀간 분들의 이야기</h2>
+        <p class="text-sm text-[#6A584B]">네이버 플레이스 평점 4.9점, 인스타그램 #모슬베이커리 12,000+ 리뷰</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white p-6 rounded-2xl border border-[#E5DACD] shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-1 text-[#E5A152] mb-3">★★★★★</div>
+            <p class="text-[#4E3F35] text-sm leading-relaxed mb-4">
+              &ldquo;제주 올 때마다 첫날 무조건 들르는 곳이에요. 현무암 소금빵 버터 동굴 진짜 환상이고, 2층 통창으로 보이는 구도심 골목 뷰가 너무 포근합니다.&rdquo;
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#F3ECE4] text-xs">
+            <div class="font-semibold text-[#2E221B]">김*은 (제주 한 달 살기 여행자)</div>
+            <div class="flex items-center justify-between text-[#8E7969] mt-1">
+              <span>현무암 소금빵 & 드립커피</span>
+              <span>2026.10.02</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-[#E5DACD] shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-1 text-[#E5A152] mb-3">★★★★★</div>
+            <p class="text-[#4E3F35] text-sm leading-relaxed mb-4">
+              &ldquo;관덕정 산책하고 들러서 말차 크로와상 하나에 라떼 마시면 하루 피로가 다 녹아요. 단맛이 과하지 않고 제주 말차 본연의 깊은 맛이 납니다.&rdquo;
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#F3ECE4] text-xs">
+            <div class="font-semibold text-[#2E221B]">박*진 (도민 단골손님)</div>
+            <div class="flex items-center justify-between text-[#8E7969] mt-1">
+              <span>한라산 말차 크로와상</span>
+              <span>2026.09.28</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-[#E5DACD] shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-1 text-[#E5A152] mb-3">★★★★★</div>
+            <p class="text-[#4E3F35] text-sm leading-relaxed mb-4">
+              &ldquo;우도 땅콩 크림빵이랑 구좌 당근 깜빠뉴 포장해서 해변에서 먹었는데 감동이었어요. 제주 식재료를 이렇게 세련되게 풀다니 최고!&rdquo;
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[#F3ECE4] text-xs">
+            <div class="font-semibold text-[#2E221B]">이*현 (빵지순례자)</div>
+            <div class="flex items-center justify-between text-[#8E7969] mt-1">
+              <span>우도 땅콩 크림 소보로</span>
+              <span>2026.09.25</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 진행 중인 이벤트 배너 -->
+      <div class="bg-gradient-to-r from-[#533F31] to-[#3B2A1E] text-white rounded-3xl p-7 sm:p-9 shadow-xl relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#E5A869] text-[#2F1E10] text-xs font-bold mb-3">
+            10월 특별 혜택
+          </span>
+          <h3 class="font-serif-kr text-2xl sm:text-3xl font-bold mb-3">
+            인스타그램 인증샷 & 텀블러 할인 이벤트
+          </h3>
+          <p class="text-[#D8C7B8] text-sm leading-relaxed mb-6">
+            매장에서 모슬 빵이나 공간 사진을 인스타그램에 업로드하고 직원에 보여주시면,
+            매일 아침 직접 구운 달콤한 <strong class="text-white">‘제주 귤 마들렌 1구’</strong>를 선물로 드립니다. 개인 텀블러 지참 시 전 음료 500원 할인!
+          </p>
+          <div class="flex flex-wrap items-center gap-3">
+            <button onclick="openModal('event-modal')" class="px-5 py-2.5 rounded-full bg-[#FAF5EF] text-[#3D2C20] text-xs sm:text-sm font-semibold hover:bg-white transition cursor-pointer">
+              자세한 이벤트 참여 방법 보기
+            </button>
+            <a href="https://instagram.com" target="_blank" class="px-4 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium transition flex items-center gap-1.5">
+              <span>@moseul.jeju 팔로우</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 매장 정보 및 오시는 길 (Location & Info) -->
+  <section id="location" class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="text-center max-w-xl mx-auto mb-14">
+        <span class="text-xs font-semibold tracking-widest uppercase text-[#8F5E38]">Location & Visit</span>
+        <h2 class="font-serif-kr text-3xl sm:text-4xl font-bold text-[#2A201A] mt-2 mb-3">오시는 길 및 매장 안내</h2>
+        <p class="text-sm sm:text-base text-[#685548]">제주시 구도심 관덕정 맞은편 돌담 골목에 위치해 있습니다.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- 매장 상세 카드 -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-7 sm:p-9 border border-[#E5DACD] shadow-sm space-y-6">
+          <div class="border-b border-[#F0E6DB] pb-5">
+            <span class="text-xs font-bold text-[#8C5B32] uppercase tracking-wider">Store Hours</span>
+            <div class="flex items-center gap-2 mt-1">
+              <h3 class="font-serif-kr text-2xl font-bold text-[#2A201A]">영업시간</h3>
+              <span class="px-2 py-0.5 rounded-full bg-[#E8F3EB] text-[#24673B] text-xs font-medium">영업중</span>
+            </div>
+            <div class="mt-3 space-y-1 text-sm text-[#4E3E34]">
+              <div class="flex justify-between">
+                <span class="font-medium">화요일 ~ 일요일</span>
+                <span class="font-bold">09:00 - 20:00</span>
+              </div>
+              <div class="text-xs text-[#8A7667]">* 매일 당일 빵 소진 시 음료 및 디저트만 이용 가능</div>
+              <div class="flex justify-between text-[#B24B36] pt-1">
+                <span class="font-medium">정기 휴무</span>
+                <span class="font-bold">매주 월요일</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="border-b border-[#F0E6DB] pb-5">
+            <span class="text-xs font-bold text-[#8C5B32] uppercase tracking-wider">Address</span>
+            <p class="text-sm font-bold text-[#2B2017] mt-1">제주특별자치도 제주시 관덕로 15길 12, 1-2층 (삼도이동)</p>
+            <p class="text-xs text-[#826F60] mt-1">관덕정 광장에서 도보 3분 / 제주 동문시장에서 도보 7분</p>
+            <div class="mt-3 flex gap-2">
+              <button onclick="copyAddress()" class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-[#FAF4ED] text-[#604937] hover:bg-[#F2E7DC] border border-[#DFCFC2] transition cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <span>주소 복사</span>
+              </button>
+              <a href="tel:064-752-1984" class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-[#FAF4ED] text-[#604937] hover:bg-[#F2E7DC] border border-[#DFCFC2] transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                <span>전화 연결</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm text-[#544337]">
+            <div class="flex items-start gap-2.5">
+              <span class="text-base shrink-0 mt-0.5">🚗</span>
+              <div>
+                <span class="font-bold text-[#2B2017]">주차 안내:</span> 매장 전면 4대 전용 주차 가능하며, 만차 시 도보 1분 거리 관덕정 공영주차장 1시간 무료 주차 지원.
+              </div>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <span class="text-base shrink-0 mt-0.5">🌿</span>
+              <div>
+                <span class="font-bold text-[#2B2017]">편의 시설:</span> 와이파이 완비, 아기의자 보유, 야외 테라스 애견 동반 가능, 단체 예약 및 포장 가능
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 grid grid-cols-2 gap-2 text-center text-xs">
+            <a href="https://map.naver.com" target="_blank" class="py-2.5 px-3 rounded-xl bg-[#03C75A]/10 text-[#008A3D] font-bold hover:bg-[#03C75A]/20 transition flex items-center justify-center gap-1.5">
+              <span>네이버 지도 보기</span>
+            </a>
+            <a href="https://map.kakao.com" target="_blank" class="py-2.5 px-3 rounded-xl bg-[#FEE500]/30 text-[#3C1E1E] font-bold hover:bg-[#FEE500]/50 transition flex items-center justify-center gap-1.5">
+              <span>카카오맵 길찾기</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 지도 영역 UI 카드 -->
+        <div class="lg:col-span-7 bg-[#EFE9E0] rounded-3xl overflow-hidden border border-[#E3D7C9] shadow-sm relative">
+          <div class="relative aspect-[16/11] sm:aspect-[16/10] w-full bg-[#E5DCCF] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 bg-[#E7E2D8] opacity-80" style="background-image: radial-gradient(#D5C9B8 1.5px, transparent 1.5px); background-size: 16px 16px;"></div>
+
+            <!-- 지도 도로 및 랜드마크 마커 시뮬레이션 -->
+            <div class="absolute inset-0 pointer-events-none">
+              <div class="absolute top-1/4 left-0 right-0 h-4 bg-[#DFD6C8] -rotate-6"></div>
+              <div class="absolute top-0 bottom-0 left-1/3 w-6 bg-[#DFD6C8] rotate-12"></div>
+              <div class="absolute top-1/2 left-0 right-0 h-8 bg-white/70 shadow-xs"></div>
+              <div class="absolute top-0 bottom-0 right-1/4 w-7 bg-white/70 shadow-xs -rotate-3"></div>
+
+              <div class="absolute top-12 left-10 bg-white/90 px-2.5 py-1 rounded shadow-xs text-[11px] text-[#715D4E] font-medium border border-[#DDD0C3]">
+                🏛️ 관덕정 광장 (도보 3분)
+              </div>
+              <div class="absolute top-16 right-12 bg-white/90 px-2.5 py-1 rounded shadow-xs text-[11px] text-[#715D4E] font-medium border border-[#DDD0C3]">
+                🏮 제주 동문시장 (도보 7분)
+              </div>
+              <div class="absolute bottom-10 left-16 bg-white/90 px-2.5 py-1 rounded shadow-xs text-[11px] text-[#715D4E] font-medium border border-[#DDD0C3]">
+                🅿️ 관덕정 공영주차장
+              </div>
+            </div>
+
+            <!-- 매장 핀 -->
+            <div class="relative z-10 flex flex-col items-center">
+              <div class="bg-[#4E392A] text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-xl flex items-center gap-1.5 mb-1.5 border border-[#8C6446]">
+                <span class="w-2 h-2 rounded-full bg-[#E5A869]"></span>
+                <span>베이커리 모슬 (본점)</span>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-[#8C542D] border-4 border-white shadow-2xl flex items-center justify-center text-white">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              </div>
+              <div class="w-4 h-1.5 bg-black/25 rounded-full blur-[1px] mt-0.5"></div>
+            </div>
+
+            <!-- 지도 하단 안내 바 -->
+            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-lg border border-[#E5DACD] flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-[#FAF3EA] flex items-center justify-center text-[#8C5831] font-bold text-xs">
+                  JEJU
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-[#2F2218]">제주시 관덕로 15길 12</p>
+                  <p class="text-[11px] text-[#867160]">제주공항에서 택시/차량 12분 거리</p>
+                </div>
+              </div>
+              <button onclick="copyAddress()" class="px-3 py-1.5 rounded-lg bg-[#533F31] hover:bg-[#3D2D22] text-white text-xs font-medium transition cursor-pointer">
+                주소 복사
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 하단 푸터 (Footer) -->
+  <footer class="bg-[#382B22] text-[#DCD0C4] pt-16 pb-12 border-t border-[#4E3D31]">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[#4E3D31]">
+        <div class="md:col-span-5 space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-[#523E30] flex items-center justify-center font-serif-kr text-base font-bold text-[#F0E4D7] border border-[#6B5240]">
+              모
+            </span>
+            <span class="font-serif-kr text-2xl font-bold text-[#FAF5EF]">
+              베이커리 모슬
+            </span>
+          </div>
+          <p class="text-xs text-[#BFAF9F] leading-relaxed max-w-sm">
+            매일 아침 제주의 자연이 빚어낸 순수한 재료로 건강하고 따뜻한 빵을 굽습니다.
+            여행의 피로를 녹이고 일상에 소박한 기쁨을 더하는 제주의 아늑한 쉼표가 되겠습니다.
+          </p>
+          <div class="pt-2 flex items-center gap-3">
+            <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full bg-[#49392D] hover:bg-[#5D493A] flex items-center justify-center text-[#E0D1C2] transition" aria-label="인스타그램">
+              <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <button onclick="copyAddress()" class="w-8 h-8 rounded-full bg-[#49392D] hover:bg-[#5D493A] flex items-center justify-center text-[#E0D1C2] transition cursor-pointer" title="주소 복사">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="md:col-span-3 space-y-2 text-xs">
+          <h4 class="font-bold text-sm text-[#F3EBE1] mb-3">빠른 바로가기</h4>
+          <div><a href="#about" class="hover:text-white transition">베이커리 모슬 소개</a></div>
+          <div><a href="#signature" class="hover:text-white transition">시그니처 메뉴 안내</a></div>
+          <div><a href="#schedule" class="hover:text-white transition">빵 나오는 시간표</a></div>
+          <div><a href="#atmosphere" class="hover:text-white transition">공간 & 분위기</a></div>
+          <div><a href="#location" class="hover:text-white transition">오시는 길 & 주차</a></div>
+        </div>
+
+        <div class="md:col-span-4 space-y-2 text-xs text-[#B2A292]">
+          <h4 class="font-bold text-sm text-[#F3EBE1] mb-3">매장 및 사업자 정보</h4>
+          <p>상호명: 베이커리 모슬 (Bakery Moseul) | 대표자: 고모슬</p>
+          <p>사업자등록번호: 616-81-99824 | 통신판매업신고: 제2026-제주일도-0142호</p>
+          <p>주소: 제주특별자치도 제주시 관덕로 15길 12, 1-2층</p>
+          <p>고객 문의: 064-752-1984 | 이메일: hello@moseuljeju.com</p>
+          <p class="text-[11px] text-[#867566] pt-1">
+            화~일 09:00 - 20:00 (월요일 휴무 / 빵 소진 시 마감)
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#8F7E6F] gap-3">
+        <p>&copy; 2026 Bakery Moseul. All rights reserved.</p>
+        <p>Designed with warmth for Jeju Bakery Lovers.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 메뉴 상세 모달 (JavaScript 기반) -->
+  <div id="item-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+    <div class="bg-[#FAF7F2] max-w-lg w-full rounded-3xl overflow-hidden shadow-2xl border border-[#DFD4C8] relative">
+      <button onclick="closeModal('item-modal')" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition cursor-pointer">
+        ✕
+      </button>
+      <div class="relative aspect-[16/10] bg-[#E5DCD1]">
+        <img id="modal-img" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute bottom-3 left-4">
+          <span id="modal-tag" class="px-3 py-1 rounded-full text-xs font-bold bg-[#E49D56] text-[#2C1C11]"></span>
+        </div>
+      </div>
+      <div class="p-6 sm:p-7 space-y-4">
+        <div>
+          <div class="flex items-baseline justify-between">
+            <h3 id="modal-title" class="font-serif-kr text-2xl font-bold text-[#2A1F18]"></h3>
+            <span id="modal-price" class="font-serif-kr text-xl font-bold text-[#86512C]"></span>
+          </div>
+          <p id="modal-eng" class="text-xs text-[#8A7667] mt-0.5"></p>
+        </div>
+        <p id="modal-desc" class="text-sm text-[#544439] leading-relaxed"></p>
+        <div class="space-y-2 bg-[#F2EBE2] p-4 rounded-2xl text-xs text-[#5E4E42] border border-[#E3D6C8]">
+          <div class="flex"><span class="font-bold text-[#3B2C21] w-24 shrink-0">갓 구운 시간:</span><span id="modal-time"></span></div>
+          <div class="flex"><span class="font-bold text-[#3B2C21] w-24 shrink-0">주요 원재료:</span><span id="modal-ing"></span></div>
+          <div class="flex"><span class="font-bold text-[#3B2C21] w-24 shrink-0">알레르기 정보:</span><span id="modal-allergens" class="text-[#884A3B]"></span></div>
+        </div>
+        <div class="pt-2 flex gap-3">
+          <button onclick="closeModal('item-modal')" class="flex-1 py-3 rounded-xl bg-[#543F31] hover:bg-[#3F2E22] text-white text-sm font-medium transition cursor-pointer">확인 완료</button>
+          <a href="#location" onclick="closeModal('item-modal')" class="px-4 py-3 rounded-xl bg-[#EBE1D6] hover:bg-[#DFD3C6] text-[#4A382C] text-sm font-medium transition text-center">매장 위치</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10월 이벤트 모달 (JavaScript 기반) -->
+  <div id="event-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+    <div class="bg-[#FAF7F2] max-w-md w-full rounded-3xl p-6 sm:p-7 shadow-2xl border border-[#DFD4C8] relative">
+      <button onclick="closeModal('event-modal')" class="absolute top-5 right-5 text-[#6D5A4C] hover:text-[#2A1F18] transition cursor-pointer text-lg font-bold">✕</button>
+      <div class="w-12 h-12 rounded-2xl bg-[#EFE4DA] flex items-center justify-center text-2xl mb-4">🍊</div>
+      <h3 class="font-serif-kr text-xl sm:text-2xl font-bold text-[#2A1F18] mb-2">10월 제주 베이커리 모슬 이벤트</h3>
+      <p class="text-xs text-[#7B6759] mb-4">기간: 2026.10.01 ~ 10.31 (한 달간 진행)</p>
+      <div class="space-y-3.5 text-xs sm:text-sm text-[#544439] leading-relaxed mb-6">
+        <div class="bg-white p-3.5 rounded-xl border border-[#E7DDD0]">
+          <strong class="text-[#8C552E] block mb-1">Event 1. 인스타그램 포토 리뷰</strong>
+          모슬 매장 사진 또는 빵 사진을 인스타그램에 태그(#베이커리모슬 #제주빵집 @moseul.jeju) 후 직원에게 보여주시면 수제 &lsquo;제주 귤 마들렌&rsquo; 1개를 증정합니다.
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-[#E7DDD0]">
+          <strong class="text-[#8C552E] block mb-1">Event 2. 제주 텀블러 에코 혜택</strong>
+          개인 텀블러를 지참하여 음료 주문 시 500원 즉시 할인해 드립니다.
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-[#E7DDD0]">
+          <strong class="text-[#8C552E] block mb-1">Event 3. 선물용 박스 무료 패키징</strong>
+          시그니처 소금빵 및 크로와상 4개 이상 구매 시 제주 전통 돌담 느낌의 기프트 패키지를 무료로 포장해 드립니다.
+        </div>
+      </div>
+      <button onclick="closeModal('event-modal')" class="w-full py-3 rounded-xl bg-[#523E30] text-white text-sm font-medium hover:bg-[#3D2C20] transition cursor-pointer">
+        확인했습니다
+      </button>
+    </div>
+  </div>
+
+  <!-- JavaScript 상호작용 스크립트 -->
+  <script>
+    // 메뉴 데이터
+    const itemsData = {
+      salt: {
+        title: "제주 현무암 소금빵",
+        eng: "Jeju Basalt Black Salt Bread",
+        price: "3,800원",
+        tag: "시그니처 No.1",
+        img: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=800&q=80",
+        desc: "제주의 검은 현무암을 모티브로 천연 오징어 먹물과 프랑스 AOP 이즈니 버터를 가득 넣어 구워냈습니다. 한 입 베어 물면 짭조름한 게랑드 소금과 고소한 버터의 풍미가 입안 가득 터져 나옵니다.",
+        time: "매일 09:30 / 14:00 (1일 2회 한정)",
+        ing: "프랑스산 밀가루, AOP 이즈니 버터, 오징어 먹물, 게랑드 천일염",
+        allergens: "밀, 우유, 오징어 함유"
+      },
+      matcha: {
+        title: "제주 한라산 말차 크로와상",
+        eng: "Hallasan Matcha Cream Croissant",
+        price: "5,800원",
+        tag: "베스트셀러",
+        img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80",
+        desc: "한라산 자락 청정 다원에서 재배된 유기농 말차만을 선별하여 24시간 저온 숙성한 생크림 가나슈를 바삭한 27겹 페이스트리 속에 빈틈없이 채웠습니다.",
+        time: "매일 10:30 (한정 수량 60개)",
+        ing: "프랑스산 T55 밀가루, 제주 서귀포 유기농 말차, 동물성 생크림 100%",
+        allergens: "밀, 우유, 계란 함유"
+      },
+      peanut: {
+        title: "우도 땅콩 크림 소보로",
+        eng: "Udo Peanut Brioche Craquelin",
+        price: "4,900원",
+        tag: "고소함 가득",
+        img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
+        desc: "달콤한 크랙 소보로 속에 바삭한 우도 햇땅콩 크럼블과 부드러운 수제 수비드 피넛 버터 크림이 가득 들어있어 남녀노소 누구나 좋아하는 모슬의 스테디셀러입니다.",
+        time: "매일 11:00",
+        ing: "제주 우도 땅콩 100%, 유기농 설탕, 탕종 반죽, 마스카포네 치즈",
+        allergens: "밀, 우유, 대두, 땅콩 함유"
+      },
+      carrot: {
+        title: "구좌 당근 호두 사워도우",
+        eng: "Gujwa Carrot & Walnut Campagne",
+        price: "6,500원",
+        tag: "건강 식사빵",
+        img: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=800&q=80",
+        desc: "직접 배양한 사과 천연발효종으로 36시간 저온 숙성했습니다. 소화가 편안하며, 구좌 당근 특유의 감미로움과 볶은 호두의 식감이 식사빵으로 최고의 만족감을 선사합니다.",
+        time: "매일 09:00",
+        ing: "프랑스산 유기농 통밀, 제주 구좌 당근, 캘리포니아 호두, 사과 발효종",
+        allergens: "밀, 호두 함유 (계란/버터 미사용)"
+      },
+      kouign: {
+        title: "제주 노을 감귤 퀸아망",
+        eng: "Jeju Sunset Tangerine Kouign-Amann",
+        price: "5,200원",
+        tag: "상큼 달콤",
+        img: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=800&q=80",
+        desc: "제주 감귤의 상큼한 과즙과 유기농 사탕수수로 조려낸 수제 마멀레이드를 버터 향 가득한 퀸아망에 레이어링했습니다. 겉면의 바삭한 카라멜 껍질이 매력적입니다.",
+        time: "매일 11:30",
+        ing: "제주 감귤, 프랑스 엘르앤비르 버터, 유기농 원당",
+        allergens: "밀, 우유 함유"
+      }
+    };
+
+    // 모바일 햄버거 메뉴 토글 로직
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    function toggleMenu() {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        mobileMenu.classList.remove('hidden');
+        hamburgerIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      }
+    }
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      hamburgerIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // 모달 제어
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // 메뉴 상세 팝업 오픈
+    function showDetail(key) {
+      const item = itemsData[key];
+      if (!item) return;
+      document.getElementById('modal-img').src = item.img;
+      document.getElementById('modal-tag').textContent = item.tag;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-eng').textContent = item.eng;
+      document.getElementById('modal-price').textContent = item.price;
+      document.getElementById('modal-desc').textContent = item.desc;
+      document.getElementById('modal-time').textContent = item.time;
+      document.getElementById('modal-ing').textContent = item.ing;
+      document.getElementById('modal-allergens').textContent = item.allergens;
+      openModal('item-modal');
+    }
+
+    // 매장 주소 클립보드 복사 & 토스트 알림
+    function copyAddress() {
+      const address = "제주특별자치도 제주시 관덕로 15길 12 베이커리 모슬";
+      navigator.clipboard.writeText(address).then(() => {
+        showToast("매장 주소가 클립보드에 복사되었습니다.");
+      }).catch(() => {
+        showToast("제주시 관덕로 15길 12");
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
